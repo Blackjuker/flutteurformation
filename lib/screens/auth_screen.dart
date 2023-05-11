@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:formation/services/auth_service.dart';
 
 import 'package:formation/widgets/appbar_widget.dart';
 
@@ -14,6 +15,9 @@ class AuthScreen extends StatefulWidget {
   final _formKey = GlobalKey<FormState>();
   //stocker la saisie
   Map<String, String> _formType = {'username': '', 'password': ''};
+
+  //API d'authentification
+  AuthService _authService = AuthService();
 }
 
 class _AuthScreenState extends State<AuthScreen> {
@@ -63,6 +67,9 @@ class _AuthScreenState extends State<AuthScreen> {
                     if (widget._formKey.currentState!.validate()) {
                       //sauvegarder l'état du formulaire
                       widget._formKey.currentState!.save();
+
+                      //appel de l'API d'authentification
+                      widget._authService.getAuth(widget._formType);
                       inspect(widget._formType);
                     }
                   },
