@@ -1,6 +1,7 @@
 import 'package:formation/screens/auth_screen.dart';
 import 'package:formation/screens/home_screen.dart';
 import 'package:formation/screens/second_screen.dart';
+import 'package:formation/screens/splash_screen.dart';
 import 'package:go_router/go_router.dart';
 
 class RouterService {
@@ -9,8 +10,13 @@ class RouterService {
       routes: [
         GoRoute(
           path: '/',
+          name: 'splash',
+          builder: (context, state) => SplashScreen(),
+        ),
+        GoRoute(
+          path: '/auth',
           name: 'auth',
-          builder: (context, state) =>  AuthScreen(),
+          builder: (context, state) => AuthScreen(),
         ),
         GoRoute(
           path: '/home',
