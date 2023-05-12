@@ -1,9 +1,11 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:formation/models/user.dart';
 import 'package:formation/services/auth_service.dart';
 
 import 'package:formation/widgets/appbar_widget.dart';
+import 'package:go_router/go_router.dart';
 
 class AuthScreen extends StatefulWidget {
   AuthScreen({super.key});
@@ -14,7 +16,10 @@ class AuthScreen extends StatefulWidget {
   //état du formulaire
   final _formKey = GlobalKey<FormState>();
   //stocker la saisie
-  Map<String, String> _formType = {'username': '', 'password': ''};
+  Map<String, String> _formType = {
+    'username': 'kminchelle',
+    'password': '0lelplR'
+  };
 
   //API d'authentification
   AuthService _authService = AuthService();
@@ -36,6 +41,7 @@ class _AuthScreenState extends State<AuthScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 TextFormField(
+                  initialValue: 'kminchelle',
                   decoration: const InputDecoration(
                     label: Text('Login'),
                   ),
@@ -49,6 +55,7 @@ class _AuthScreenState extends State<AuthScreen> {
                   height: 20,
                 ),
                 TextFormField(
+                  initialValue: '0lelplR',
                   decoration: const InputDecoration(
                     label: Text('Pasword'),
                   ),
@@ -69,8 +76,19 @@ class _AuthScreenState extends State<AuthScreen> {
                       widget._formKey.currentState!.save();
 
                       //appel de l'API d'authentification
-                      widget._authService.getAuth(widget._formType);
-                      inspect(widget._formType);
+                      // then : accéder aux données de la Future lorsque
+                      //celle-ci est résolue
+
+                      widget._authService
+                          .getAuth(widget._formType)
+                          .then((User user) => context.pushNamed('home'))
+                          .onError((error, stackTrace) =>
+
+                              //ScaffoldMessenger:message qui s'affiche dans le widget scaffold
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content: Text('Credential error: '))));
+                      //   inspect(widget._formType);
                     }
                   },
                   child: const Text('Connect'),
